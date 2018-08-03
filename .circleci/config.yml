@@ -1,0 +1,94 @@
+version: 2
+
+defaults: &defaults
+  working_directory: ~/repo
+  docker:
+    - image: circleci/node:10.6
+
+jobs:
+  install:
+    <<: *defaults
+    steps:
+      - checkout
+      - restore_cache:
+          keys:
+          - v1-dependencies-{{ checksum "package-lock.json" }}
+      - run:
+          name: Install dependencies (CI mode)
+          command: |
+            npm ci
+      - save_cache:
+          paths:
+            - node_modules
+          key: v1-dependencies-{{ checksum "package-lock.json" }}
+
+  compile:
+    <<: *defaults
+    steps:
+      - checkout
+      - restore_cache:
+          keys:
+          - v1-dependencies-{{ checksum "package-lock.json" }}
+      - run:
+          name: Build
+          command: |
+            npm run build
+
+  check-gql-schema:
+    <<: *defaults
+    steps:
+      - checkout
+      - restore_cache:
+          keys:
+          - v1-dependencies-{{ checksum "package-lock.json" }}
+      - run:
+          name: Generate GQL Schema
+          command: |
+            npm run generate-gql-schema
+      - run:
+          name: Check schema was not chaged
+          command: |
+            git diff --exit-code
+
+  lint:
+    <<: *defaults
+    steps:
+      - checkout
+      - restore_cache:
+          keys:
+          - v1-dependencies-{{ checksum "package-lock.json" }}
+      - run:
+          name: Lint code
+          command: |
+            npm run lint
+
+  test:
+    <<: *defaults
+    steps:
+      - checkout
+      - restore_cache:
+          keys:
+          - v1-dependencies-{{ checksum "package-lock.json" }}
+      - run:
+          name: Test
+          command: |
+            npm run test
+
+workflows:
+  version: 2
+  default:
+    jobs:
+      - install
+      - compile:
+          requires:
+            - install
+      - check-gql-schema:
+          requires:
+            - install
+      - lint:
+          requires:
+            - install
+      - test:
+          requires:
+            - install
+

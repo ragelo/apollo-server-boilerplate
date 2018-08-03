@@ -1,0 +1,19 @@
+schema {
+  query: RootQuery
+}
+
+type RootQuery {
+  viewer: Viewer
+}
+
+type User {
+  id: ID!
+  roles: [String!]!
+  username: String!
+  profilePictureUrl: String!
+}
+
+type Viewer {
+  id: String!
+  user: User!
+}
