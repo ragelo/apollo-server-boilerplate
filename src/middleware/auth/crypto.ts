@@ -8,7 +8,7 @@ export interface AccessTokenPayload {
   clientId: string;
   expires: number; // seconds
   user: {
-    id: string;
+    id: number;
     role: SubjectRole;
   };
   refreshTokenRef: string; // refreshToken.id

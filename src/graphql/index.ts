@@ -1,19 +1,17 @@
 import {ApolloServer} from 'apollo-server-express';
 
 import logger from '../logger';
-import {makeContext} from './context';
-import resolvers from './resolvers';
-import {default as typeDefs} from './types';
+import { makeContext } from './context';
+import schema from './schema';
 
 
 export const apolloServer = new ApolloServer({
-  typeDefs,
-  resolvers,
+  schema,
   context({req, res}: any) {
     return makeContext(req, res);
   },
   formatError(error: any) {
-    logger.error(error);
+    logger.warn(error);
     return error;
   },
   formatResponse(response: any) {

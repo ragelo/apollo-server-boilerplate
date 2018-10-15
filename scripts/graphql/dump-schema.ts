@@ -1,5 +1,4 @@
 #!/usr/bin/env ts-node
-import {makeExecutableSchema} from 'apollo-server';
 import * as fs from 'fs';
 import {graphql, introspectionQuery, printSchema} from 'graphql';
 
@@ -21,12 +20,7 @@ function onFinish(resolve: any, reject: any) {
 
 export async function updateSchema() {
   try {
-    const typeDefs = require('../../src/graphql/types').default;
-    const resolvers = require('../../src/graphql/resolvers').default;
-    const schema = makeExecutableSchema({
-      typeDefs,
-      resolvers,
-    });
+    const schema = require('../../src/graphql/schema').default;
     const json = await graphql(schema, introspectionQuery);
     await Promise.all([
       new Promise((resolve, reject) => fs.writeFile(

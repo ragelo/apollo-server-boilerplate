@@ -74,7 +74,7 @@ export async function checkBearerToken(req: /* FIXME */ any, res: express.Respon
   }
 
   req.auth.subjectId = user.id;
-  req.auth.role = user.role;
+  req.auth.roles = user.roles;
   req.auth.user = user;
 
   req.auth.clientId = accessTokenPayload;

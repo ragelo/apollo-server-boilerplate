@@ -1,19 +1,51 @@
-schema {
-  query: RootQuery
+input LoginInput {
+  basicToken: String!
+  username: String!
+  password: String!
+  clientMutationId: String
 }
 
-type RootQuery {
+type LoginPayload {
+  accessToken: String!
+  expiresAt: String!
+  refreshToken: String!
+  user: User!
+  clientMutationId: String
+}
+
+type Mutation {
+  login(input: LoginInput!): LoginPayload
+}
+
+"""An object with an ID"""
+interface Node {
+  """The id of the object."""
+  id: ID!
+}
+
+type Query {
+  """Fetches an object given its ID"""
+  node(
+    """The ID of an object"""
+    id: ID!
+  ): Node
   viewer: Viewer
 }
 
-type User {
+type User implements Node {
   id: ID!
-  roles: [String!]!
+  roles: [UserRole!]!
   username: String!
   profilePictureUrl: String!
 }
 
+enum UserRole {
+  GUEST
+  STANDART
+}
+
 type Viewer {
-  id: String!
+  id: ID!
   user: User!
+  ip: String!
 }

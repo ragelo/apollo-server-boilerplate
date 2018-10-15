@@ -7,7 +7,7 @@ export {Logger} from 'winston';
 
 const options = {
   console: {
-    level: config.logging.LOG_LEVEL || 'debug',
+    level: config.logging.LOG_LEVEL,
     handleExceptions: true,
     colorize: true,
   },

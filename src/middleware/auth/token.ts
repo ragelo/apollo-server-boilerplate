@@ -60,7 +60,7 @@ export async function tokenHandler(req: /* FIXME */ any, res: express.Response, 
   }
 
   req.auth.subjectId = user.id;
-  req.auth.role = user.role;
+  req.auth.roles = user.roles;
   req.auth.user = user;
 
   const refreshToken = await encodeRefreshToken({user});
@@ -73,7 +73,7 @@ export async function tokenHandler(req: /* FIXME */ any, res: express.Response, 
     access_token: accessToken.token,
     expires_in: accessToken.expires,
     refresh_token: refreshToken.token,
-    user_role: user.role
+    user_roles: user.roles
   };
 
   res.set({'Cache-Control': 'no-store', 'Pragma': 'no-cache'});
