@@ -82,7 +82,13 @@ jobs:
       - run:
           name: Build image
           command: |
-            docker build -t ragelo/apollo-server-boilerplate:$CIRCLE_SHA1 -t ragelo/apollo-server-boilerplate:CIRCLE_BRANCH .
+            docker build -t ragelo/apollo-server-boilerplate:$CIRCLE_SHA1 -t ragelo/apollo-server-boilerplate:$CIRCLE_BRANCH .
+      - run:
+          name: Push image
+          command: |
+            echo $DOCKER_PWD | docker login -u $DOCKER_LOGIN --password-stdin
+            docker push ragelo/apollo-server-boilerplate:$CIRCLE_SHA1
+            docker push ragelo/apollo-server-boilerplate:$CIRCLE_BRANCH
 
 workflows:
   version: 2
