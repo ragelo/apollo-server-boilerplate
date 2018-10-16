@@ -1,4 +1,6 @@
 import * as express from 'express';
+
+import { AuthContext } from '../../graphql/context';
 import {getUserById} from '../../models/user';
 import {AccessTokenPayload, decodeAccessToken} from './crypto';
 
@@ -25,7 +27,7 @@ function isAuthTokenExpired(accessTokenPayload: AccessTokenPayload): boolean {
   )
 }
 
-export async function checkBearerToken(req: /* FIXME */ any, res: express.Response): Promise<void> {
+export async function checkBearerToken(req: /* FIXME */ any, res: express.Response): Promise<AuthContext> {
   const headerToken = req.get('Authorization');
   if (!headerToken) {
     throw new AuthError({
@@ -77,12 +79,16 @@ export async function checkBearerToken(req: /* FIXME */ any, res: express.Respon
   req.auth.roles = user.roles;
   req.auth.user = user;
 
-  req.auth.clientId = accessTokenPayload;
+  return {
+    subjectId: user.id,
+    user,
+    roles: user.roles,
+  }
 }
 
 export async function checkBearerTokenMiddleware(req: /* FIXME */ any, res: express.Response, next: express.NextFunction) {
   try {
-    await checkBearerToken(req, res);
+    req.auth = await checkBearerToken(req, res);
     next();
   } catch (error) {
     if (error instanceof AuthError) {
