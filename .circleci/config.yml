@@ -74,6 +74,16 @@ jobs:
           command: |
             npm run test
 
+  build-image:
+    <<: *defaults
+    steps:
+      - checkout
+      - setup_remote_docker
+      - run:
+          name: Build image
+          command: |
+            docker build -t ragelo/apollo-server-boilerplate:$CIRCLE_SHA1 -t ragelo/apollo-server-boilerplate:CIRCLE_BRANCH .
+
 workflows:
   version: 2
   default:
@@ -91,4 +101,11 @@ workflows:
       - test:
           requires:
             - install
+      - build-image:
+          requires:
+            - compile
+            - check-gql-schema
+            - lint
+            - test
+
 
