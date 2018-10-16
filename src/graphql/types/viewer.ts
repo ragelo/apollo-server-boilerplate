@@ -31,7 +31,4 @@ const ViewerGQLType = new GraphQLObjectType({
     }
   })
 });
-export const resolver = {
-  
-};
 export default ViewerGQLType;

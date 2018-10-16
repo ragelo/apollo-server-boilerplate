@@ -1,12 +1,14 @@
 import { nodeDefinitions } from 'graphql-relay';
 import { getUserById } from '../../models/user';
 
-type NodeName = 
-  | 'User'
-  | 'Viewer'
-;
+enum Node {
+    User = 'User',
+    Viewer = 'Viewer'
+}
 
-export function toGlobalId(nodeName: NodeName, id: string | number): string {
+type NodeType = Extract<keyof typeof Node, string>
+
+export function toGlobalId(nodeName: NodeType, id: string | number): string {
   return Buffer.from(`${nodeName}:${id}`).toString('base64');
 }
 
@@ -15,7 +17,7 @@ export interface NodeInfo {
     nodeName: string;
 }
 
-export function fromGlobalId(globalId: string, nodeNamesToCheck?: string[] | string): NodeInfo {
+export function fromGlobalId(globalId: string, nodeNamesToCheck?: NodeType[]| NodeType): NodeInfo {
   const encodedStr = Buffer.from(globalId, 'base64').toString('ascii');
   const [nodeName, idString] = encodedStr.split(':');
 
@@ -26,7 +28,7 @@ export function fromGlobalId(globalId: string, nodeNamesToCheck?: string[] | str
       nodeNamesToCheck = [nodeNamesToCheck]
     }
 
-    if (nodeNamesToCheck.indexOf(nodeName) < 0) {
+    if (nodeNamesToCheck.indexOf(nodeName as any) < 0) {
       throw new Error(`Invalid id. Expected: ${nodeNamesToCheck}, found: ${nodeName}`);
     }
   }

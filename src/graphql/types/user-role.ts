@@ -5,15 +5,17 @@ export enum UserRole {
   STANDART = 'STANDART',
 }
 
-interface GQLEnumValueConfig<R> extends GraphQLEnumValueConfig {
-  value: R;
+type UserRoleType = Extract<keyof typeof UserRole, string>
+
+interface GQLEnumValueConfig<Role> extends GraphQLEnumValueConfig {
+  value: Role;
 }
 
-type UserRoleToGraphQL = {
-  [Role in keyof typeof UserRole]: GQLEnumValueConfig<Role>;
+type UserRoleGraphQLConfig = {
+  [Role in UserRoleType]: GQLEnumValueConfig<Role>;
 };
 
-const values: UserRoleToGraphQL = {
+const values: UserRoleGraphQLConfig = {
   GUEST: {
     value: UserRole.GUEST,
   },
