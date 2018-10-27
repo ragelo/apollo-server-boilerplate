@@ -2,11 +2,10 @@ import { nodeDefinitions } from 'graphql-relay';
 import { getUserById } from '../../models/user';
 
 enum Node {
-    User = 'User',
-    Viewer = 'Viewer'
+    User = 'User'
 }
 
-type NodeType = Extract<keyof typeof Node, string>
+type NodeType = Extract<keyof typeof Node, string>;
 
 export function toGlobalId(nodeName: NodeType, id: string | number): string {
   return Buffer.from(`${nodeName}:${id}`).toString('base64');
@@ -25,7 +24,7 @@ export function fromGlobalId(globalId: string, nodeNamesToCheck?: NodeType[]| No
 
   if (nodeNamesToCheck) {
     if (typeof nodeNamesToCheck === 'string') {
-      nodeNamesToCheck = [nodeNamesToCheck]
+      nodeNamesToCheck = [nodeNamesToCheck];
     }
 
     if (nodeNamesToCheck.indexOf(nodeName as any) < 0) {
@@ -50,7 +49,7 @@ const {nodeInterface, nodeField: NodeGQLType} = nodeDefinitions(
         // TODO
         return 'User';
     },
-)
+);
 
-export const NodeGQLInterface = nodeInterface
+export const NodeGQLInterface = nodeInterface;
 export default NodeGQLType;

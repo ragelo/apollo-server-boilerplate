@@ -5,7 +5,7 @@ export enum UserRole {
   STANDART = 'STANDART',
 }
 
-export type UserRoleType = Extract<keyof typeof UserRole, string>
+export type UserRoleType = Extract<keyof typeof UserRole, string>;
 
 interface GQLEnumValueConfig<Role> extends GraphQLEnumValueConfig {
   value: Role;
@@ -22,7 +22,7 @@ const values: UserRoleGraphQLConfig = {
   STANDART: {
     value: UserRole.STANDART,
   },
-}
+};
 
 const UserRoleGQLType = new GraphQLEnumType({
   name: 'UserRole',

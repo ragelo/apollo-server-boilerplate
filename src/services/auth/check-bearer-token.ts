@@ -1,8 +1,8 @@
 import * as express from 'express';
 
 import { AuthContext } from '../../graphql/context';
-import {getUserById} from '../../models/user';
-import {AccessTokenPayload, decodeAccessToken} from './crypto';
+import { getUserById } from '../../models/user';
+import { AccessTokenPayload, decodeAccessToken } from './crypto';
 
 interface AuthErrorOptions {
   httpStatus: number;
@@ -24,7 +24,7 @@ class AuthError extends Error {
 function isAuthTokenExpired(accessTokenPayload: AccessTokenPayload): boolean {
   return accessTokenPayload.expires !== null && (
     !accessTokenPayload.expires || new Date(accessTokenPayload.expires * 1000) < new Date()
-  )
+  );
 }
 
 export async function checkBearerToken(req: /* FIXME */ any, res: express.Response): Promise<AuthContext> {
@@ -34,7 +34,7 @@ export async function checkBearerToken(req: /* FIXME */ any, res: express.Respon
       httpStatus: 401,
       code: 'NotAuthorized',
       message: 'NotAuthorized'
-    })
+    });
   }
 
   const matches = headerToken.match(/[bB]earer\s(\S+)/);
@@ -75,15 +75,11 @@ export async function checkBearerToken(req: /* FIXME */ any, res: express.Respon
     });
   }
 
-  req.auth.subjectId = user.id;
-  req.auth.roles = user.roles;
-  req.auth.user = user;
-
   return {
-    subjectId: user.id,
+    userId: user.id,
     user,
     roles: user.roles,
-  }
+  };
 }
 
 export async function checkBearerTokenMiddleware(req: /* FIXME */ any, res: express.Response, next: express.NextFunction) {

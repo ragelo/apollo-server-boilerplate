@@ -11,9 +11,9 @@ const QueryGQLType = new GraphQLObjectType({
       type: ViewerGQLType,
       resolve(_: any, args: any, context: Context) {
         return {
-          id: context.auth().subjectId,
+          id: context.auth().userId,
           user: {
-            id: context.auth().subjectId,
+            id: context.auth().userId,
           },
         };
       },

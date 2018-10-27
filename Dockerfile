@@ -21,4 +21,4 @@ RUN npm --prefix /app install --production
 COPY --from=build-stage /app/schemas/schema.json /app/schemas/schema.json
 COPY --from=build-stage /app/dist/ /app/dist/
 
-CMD npm --prefix /app run start
+CMD npm --prefix /app run production
