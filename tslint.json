@@ -10,6 +10,7 @@
     ],
     "curly": true,
     "eofline": true,
+    "indent": [true, "spaces", 2],
     "export-name": false,
     "chai-vague-errors": false,
     "no-unsafe-any": false,
@@ -21,22 +22,29 @@
       "rxjs"
     ],
     "import-spacing": true,
-    "indent": [
-      true,
-      "spaces"
-    ],
     "interface-over-type-literal": true,
     "label-position": true,
     "max-line-length": [
       true,
-      150
+      140
     ],
     "member-access": false,
     "max-classes-per-file": false,
     "member-ordering": [
       true,
-      "static-before-instance",
-      "variables-before-functions"
+      {
+        "order": [
+          "public-static-field",
+          "public-instance-field",
+          "public-constructor",
+          "private-static-field",
+          "private-instance-field",
+          "private-constructor",
+          "public-instance-method",
+          "protected-instance-method",
+          "private-instance-method"
+        ]
+      }
     ],
     "no-arg": true,
     "no-bitwise": false,
@@ -83,9 +91,7 @@
       "jsx-single"
     ],
     "radix": true,
-    "semicolon": [
-      "always"
-    ],
+    "semicolon": true,
     "triple-equals": [
       true,
       "allow-null-check"
@@ -108,10 +114,12 @@
       "check-decl",
       "check-operator",
       "check-separator",
-      "check-type"
+      "check-type",
+      "check-module"
     ],
     "trailing-comma": false,
     "interface-name": false,
-    "no-consecutive-blank-lines": [true, 2]
+    "no-consecutive-blank-lines": [true, 2],
+    "no-implicit-dependencies": [true, "dev"]
   }
 }

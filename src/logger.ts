@@ -1,6 +1,6 @@
-import {Response} from 'express';
+import { Response } from 'express';
 import * as morgan from 'morgan';
-import {createLogger, format, transports} from 'winston';
+import { createLogger, format, transports } from 'winston';
 import config from './config';
 
 export {Logger} from 'winston';

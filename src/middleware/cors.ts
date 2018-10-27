@@ -1,4 +1,4 @@
-import {NextFunction, Request, Response} from 'express';
+import { NextFunction, Request, Response } from 'express';
 
 
 const allowedMethods: string[] = ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'];

@@ -45,7 +45,6 @@ enum UserRole {
 }
 
 type Viewer {
-  id: ID!
   user: User!
   ip: String!
 }

@@ -1,10 +1,10 @@
 import { GraphQLNonNull, GraphQLString } from 'graphql';
-import {mutationWithClientMutationId} from 'graphql-relay';
+import { mutationWithClientMutationId } from 'graphql-relay';
 
-import { BaseError } from '../../errors';
-import { encodeAccessToken, encodeRefreshToken } from '../../middleware/auth/crypto';
 import { getAuthClient } from '../../models/auth-client';
 import { checkUserPassword } from '../../models/user';
+import { encodeAccessToken, encodeRefreshToken } from '../../services/auth/crypto';
+import { InvalidBasicToken, InvalidCredentials } from '../../services/auth/errors';
 import UserGQLType from '../types/user';
 
 const LoginGQLMutation = mutationWithClientMutationId({
@@ -42,23 +42,13 @@ const LoginGQLMutation = mutationWithClientMutationId({
         const clientId = await getAuthClientId(args.basicToken);
 
         if (!clientId) {
-            throw new BaseError({
-                error: {
-                    code: 'InvalidBasicToken',
-                },
-                message: 'InvalidBasicToken',
-            });
+            throw new InvalidBasicToken();
         }
 
         const user = await checkUserPassword(args.username, args.password);
-    
+
         if (!user) {
-            throw new BaseError({
-                error: {
-                    code: 'InvalidCredentials',
-                },
-                message: 'InvalidCredentials',
-            });
+            throw new InvalidCredentials();
         }
 
         const refreshToken = await encodeRefreshToken({user});
@@ -82,6 +72,7 @@ export default LoginGQLMutation;
 async function getAuthClientId(encodedBasicToken: string): Promise<string | null> {
     const basicToken = new Buffer(encodedBasicToken, 'base64').toString();
     const authClientInfo = basicToken.match(/^([^:]+):(.+)$/);
+
     if (!Array.isArray(authClientInfo)) {
         return null;
     }

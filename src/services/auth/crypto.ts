@@ -1,15 +1,15 @@
 import * as jwt from 'jsonwebtoken';
 import * as uuid from 'uuid';
 import config from '../../config';
-import {saveRefreshToken} from '../../models/refresh-token';
-import {SubjectRole} from './index';
+import { UserRoleType } from '../../graphql/types/user-role';
+import { saveRefreshToken } from '../../models/refresh-token';
 
 export interface AccessTokenPayload {
   clientId: string;
   expires: number; // seconds
   user: {
     id: number;
-    role: SubjectRole;
+    role: UserRoleType;
   };
   refreshTokenRef: string; // refreshToken.id
 }
@@ -59,15 +59,15 @@ export function encodeAccessToken(
     id: data.refreshTokenRef,
     token,
     expires,
-  }
+  };
 }
 
 export interface RefreshTokenPayload {
   id: string;
   user: {
     id: string;
-    role: SubjectRole;
-  },
+    role: UserRoleType;
+  };
   expires: number; // seconds
 }
 
@@ -112,5 +112,5 @@ export async function encodeRefreshToken(
     id,
     token,
     expires,
-  }
+  };
 }

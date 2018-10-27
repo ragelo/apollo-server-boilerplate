@@ -1,4 +1,4 @@
-import {ApolloServer} from 'apollo-server-express';
+import { ApolloServer } from 'apollo-server-express';
 
 import logger from '../logger';
 import { makeContext } from './context';

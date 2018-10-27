@@ -4,12 +4,14 @@
   "description": "apollo-server-boilerplate",
   "main": "dist/index.js",
   "scripts": {
-    "start": "node dist/index.js",
+    "production": "node dist/server.js",
+    "start": "ts-node src/server.ts",
     "build": "tsc -p tsconfig.json",
     "lint": "tslint --project tsconfig.json",
     "lint:fix": "tslint --project tsconfig.json --fix",
     "test": "exit 0",
-    "generate-gql-schema": "ts-node ./scripts/graphql/dump-schema.ts"
+    "schemas": "npm run schemas:gql",
+    "schemas:gql": "ts-node ./scripts/graphql/dump-schema.ts"
   },
   "repository": {
     "type": "git",
@@ -17,6 +19,7 @@
   },
   "keywords": [
     "bolerplate",
+    "typescript",
     "graphql",
     "graphql-apollo"
   ],

@@ -44,7 +44,7 @@ jobs:
       - run:
           name: Generate GQL Schema
           command: |
-            npm run generate-gql-schema
+            npm run schemas:gql
       - run:
           name: Check schema was not chaged
           command: |
