@@ -82,13 +82,16 @@ jobs:
       - run:
           name: Build image
           command: |
-            docker build -t ragelo/apollo-server-boilerplate:$CIRCLE_SHA1 -t ragelo/apollo-server-boilerplate:$CIRCLE_BRANCH .
+            docker build -t ragelo/apollo-server-boilerplate:$CIRCLE_SHA1 .
       - run:
-          name: Push image
+          name: Push image to the registry
           command: |
-            echo $DOCKER_PWD | docker login -u $DOCKER_LOGIN --password-stdin
-            docker push ragelo/apollo-server-boilerplate:$CIRCLE_SHA1
-            docker push ragelo/apollo-server-boilerplate:$CIRCLE_BRANCH
+            if [ "$ {CIRCLE_BRANCH}" == "master" ]; then
+              docker image tag ragelo/apollo-server-boilerplate:$CIRCLE_SHA1 ragelo/apollo-server-boilerplate:$CIRCLE_BRANCH
+              echo $DOCKER_PWD | docker login -u $DOCKER_LOGIN --password-stdin
+              docker push ragelo/apollo-server-boilerplate:$CIRCLE_SHA1
+              docker push ragelo/apollo-server-boilerplate:$CIRCLE_BRANCH
+            fi
 
 workflows:
   version: 2
