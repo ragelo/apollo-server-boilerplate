@@ -21,29 +21,31 @@ if (typeof config.port === 'string') {
 }
 
 async function start() {
-  server.listen(config.port, () => {
-    if (typeof config.port === 'string') {
-      fs.chmodSync(config.port, '777');
-      fs.writeFileSync('/tmp/app-initialized', '');
-      logger.info('/tmp/app-initialized');
-    }
+  return new Promise((resolve, reject) => {
+    server.listen(config.port, (error: any) => {
+      if (error) {
+        reject(error);
+      }
 
-    if (mask) {
-      mask = null;
-    }
+      if (typeof config.port === 'string') {
+        fs.chmodSync(config.port, '777');
+        fs.writeFileSync('/tmp/app-initialized', '');
+        logger.info('/tmp/app-initialized');
+      }
 
-    console.log(`Listening on ${config.port}`);
+      if (mask) {
+        mask = null;
+      }
+      resolve();
+    });
+  }).then(() => {
+    logger.info(`Listening on ${config.port}`);
   });
-
 }
 
 
 if (require.main === module) {
-  start()
-  .then(() => {
-
-  })
-  .catch((error) => {
+  start().catch((error) => {
     process.exit(1);
   });
 }

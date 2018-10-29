@@ -1,5 +1,6 @@
 import { nodeDefinitions } from 'graphql-relay';
 import { getUserById } from '../../models/user';
+import { Context } from '../context';
 
 enum Node {
     User = 'User'
@@ -35,19 +36,21 @@ export function fromGlobalId(globalId: string, nodeNamesToCheck?: NodeType[]| No
   return {id, nodeName};
 }
 
-const {nodeInterface, nodeField: NodeGQLType} = nodeDefinitions(
-    (globalId: string) => {
-        const {id, nodeName} = fromGlobalId(globalId);
+const {nodeInterface, nodeField: NodeGQLType} = nodeDefinitions<Context>(
+    (globalId, context) => {
+      context.auth();
 
-        if (nodeName === 'User' && typeof(id) === 'number') {
-            return getUserById(id);
-        }
+      const {id, nodeName} = fromGlobalId(globalId);
 
-        throw new Error('Invalid type or ref');
+      if (nodeName === 'User' && typeof(id) === 'number') {
+          return getUserById(id);
+      }
+
+      throw new Error('Invalid type or ref');
     },
     (obj) => {
-        // TODO
-        return 'User';
+      // TODO
+      return 'User';
     },
 );
 

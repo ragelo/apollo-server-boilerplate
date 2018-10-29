@@ -2,7 +2,7 @@ import { ApolloError } from 'apollo-server';
 
 
 export abstract class BaseError<Args = any> extends ApolloError {
-  apiVisible: boolean;
+  apiVisible = false;
 
   constructor(message: string = BaseError.name, code: string, args?: Args) {
     super(
@@ -10,6 +10,5 @@ export abstract class BaseError<Args = any> extends ApolloError {
       code,
       args,
     );
-    this.apiVisible = false;
   }
 }

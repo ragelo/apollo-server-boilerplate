@@ -1,4 +1,5 @@
 import { ApolloServer } from 'apollo-server-express';
+import { GraphQLError } from 'graphql';
 
 import logger from '../logger';
 import { makeContext } from './context';
@@ -10,12 +11,12 @@ export const apolloServer = new ApolloServer({
   context({req, res}: any) {
     return makeContext(req, res);
   },
-  formatError(error: any) {
+  formatError(error: GraphQLError) {
     logger.warn(error);
     return error;
   },
-  formatResponse(response: any) {
-    logger.log(response);
+  formatResponse(response: object) {
+    logger.info(response);
     return response;
   },
 });

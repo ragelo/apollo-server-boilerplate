@@ -13,17 +13,12 @@ const options = {
   },
 };
 
-const logFormat = format.printf((info) => {
-  return `[${info.timestamp}] [${info.level}] ${info.message}`;
-});
-
 const consoleTransport = new transports.Console(options.console);
 
 const logger = createLogger({
   format: format.combine(
     format.timestamp(),
-    format.simple(),
-    logFormat,
+    format.json(),
   ),
   transports: [
     consoleTransport,

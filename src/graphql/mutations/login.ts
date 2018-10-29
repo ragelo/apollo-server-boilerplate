@@ -4,7 +4,7 @@ import { mutationWithClientMutationId } from 'graphql-relay';
 import { getAuthClient } from '../../models/auth-client';
 import { checkUserPassword } from '../../models/user';
 import { encodeAccessToken, encodeRefreshToken } from '../../services/auth/crypto';
-import { InvalidBasicToken, InvalidCredentials } from '../../services/auth/errors';
+import { InvalidBasicTokenError, InvalidCredentialsError } from '../../services/auth/errors';
 import UserGQLType from '../types/user';
 
 const LoginGQLMutation = mutationWithClientMutationId({
@@ -42,13 +42,13 @@ const LoginGQLMutation = mutationWithClientMutationId({
         const clientId = await getAuthClientId(args.basicToken);
 
         if (!clientId) {
-            throw new InvalidBasicToken();
+            throw new InvalidBasicTokenError();
         }
 
         const user = await checkUserPassword(args.username, args.password);
 
         if (!user) {
-            throw new InvalidCredentials();
+            throw new InvalidCredentialsError();
         }
 
         const refreshToken = await encodeRefreshToken({user});

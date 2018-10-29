@@ -1,5 +1,5 @@
 import { Request, Response } from 'express';
-import {v4 as uuidV4 } from 'uuid';
+import { v4 as uuidV4 } from 'uuid';
 import logger, { Logger } from '../logger';
 import { User } from '../models/user';
 import { checkBearerToken } from '../services/auth/check-bearer-token';
@@ -12,8 +12,7 @@ export interface AuthContext {
 }
 
 interface ContextOptions {
-  auth: AuthContext | null;
-  authError: Error | null;
+  auth: AuthContext | Error;
   reqStartTime: Date;
 }
 
@@ -45,45 +44,37 @@ export class Context {
 
     this.requestId = uuidV4();
 
-    this._authContext = options.auth;
-    this._authError = options.authError;
+    this._auth = options.auth;
     this.reqStartTime = options.reqStartTime;
   }
 
-  private _authContext: AuthContext | null;
-  private _authError: Error | null;
+  private _auth: AuthContext | Error;
 
   // Services
   private _logger: Logger | null = null;
 
   auth(): AuthContext {
-    if (this._authError) {
-      throw this._authError;
-    }
-    if (!this._authContext) {
-      throw new Error('Client not found');
+    if (this._auth instanceof Error) {
+      throw this._auth;
     }
 
-    return this._authContext;
+    return this._auth;
   }
 
 }
 
 export async function makeContext(req: Request, res: Response): Promise<Context> {
   const reqStartTime = new Date();
-
-  let auth: AuthContext | null = null;
-  let authError: Error | null = null;
+  let auth: AuthContext | Error;
 
   try {
     auth = await checkBearerToken(req, res);
   } catch (e) {
-    authError = e;
+    auth = e;
   }
 
   return new Context(req, res, {
     auth,
-    authError,
     reqStartTime,
   });
 }

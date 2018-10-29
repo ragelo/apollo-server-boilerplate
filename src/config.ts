@@ -1,6 +1,7 @@
 const {
   NODE_ENV,
   DEBUG,
+  LOG_LEVEL,
   PASSWORD_SALT,
   TOKEN_SECRET,
   USE_NGINX_SOCKET,
@@ -32,11 +33,7 @@ const config = {
   },
   logging: {
     DEBUG,
-    LOG_LEVEL: 'info',
-    rollbar: {
-      endpoint: ROLLBAR_ENDPOINT || 'https://api.rollbar.com/api/1/item/',
-      accessToken: ROLLBAR_ACCESS_TOKEN,
-    },
+    LOG_LEVEL: LOG_LEVEL || 'info',
   },
   database: {
     redis: {
