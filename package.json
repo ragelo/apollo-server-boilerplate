@@ -47,7 +47,7 @@
     "jsonwebtoken": "^8.3.0",
     "morgan": "^1.9.1",
     "rxjs": "^6.3.3",
-    "sqreen": "^1.26.0",
+    "sqreen": "^1.36.1",
     "uuid": "^3.3.2",
     "winston": "^3.0.0"
   },
