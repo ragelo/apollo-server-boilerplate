@@ -33,8 +33,8 @@
   },
   "homepage": "https://github.com/ragelo/apollo-server-boilerplate#readme",
   "dependencies": {
-    "apollo-server": "^2.1.0",
-    "apollo-server-express": "^2.1.0",
+    "apollo-server": "^3.13.0",
+    "apollo-server-express": "^3.13.0",
     "bcrypt": "^3.0.1",
     "bluebird": "^3.5.2",
     "body-parser": "^1.18.3",
